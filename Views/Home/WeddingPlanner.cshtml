@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="WeddingPlanner">Wedding Planner</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewWedding">+Wedding</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LogOut">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="text-center">
+    <h1 class="display-4">Welcome to Wedding Planner!</h1>
+</div>
+<div class="row">
+    <div class="col-10 offset-1">
+        <table class="table table-striped table-hover">
+            <thead class="thead thead-dark">
+                <th>Wedding</th>
+                <th>Date</th>
+                <th>Guest</th>
+                <th>Action</th>
+            </thead>
+            @{
+                foreach(var wedding in Model)
+                {
+                    <tr>
+                        <td><a href="/WeddingDetails/@wedding.WeddingId">@wedding.WedderOne & @wedding.WedderTwo</a></td>
+                        <td>@wedding.Date.ToString("MMMM dd, yyyy")</td>
+                        <td>@wedding.Guests.Count</td>
+                        @if(@ViewBag.CurrentUser == wedding.Creator)
+                        {
+                            <td>
+                                <a href="/Delete/@wedding.WeddingId">Delete</a>
+                            </td>
+                        }
+                        else
+                        {
+                            {
+                                int count = 0;
+                                foreach(var guest in wedding.Guests)
+                                {
+                                    @if(@ViewBag.CurrentUser == guest.UserId)
+                                    {
+                                        count ++;
+                                    }
+                                }
+                                @if(count == 0)
+                                {
+                                    <td>
+                                        <a href="/RSVP/@wedding.WeddingId">Going</a> 
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a href="/unRSVP/@wedding.WeddingId">Not Going</a> 
+                                    </td>
+                                }
+                            }
+                        }
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>

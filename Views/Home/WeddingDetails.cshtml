@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Wedding Details";
+}
+
+@model Wedding
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="WeddingPlanner">Wedding Planner</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="WeddingPlanner">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewWedding">+Wedding</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LogOut">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="text-center">
+    <h1 class="display-4"> The Wedding of @Model.WedderOne and <br> @Model.WedderTwo</h1>
+</div>
+<div class="row">
+    <div class="col-6" id="border">
+        <div class="jumbotron">
+            <h3>Date: @Model.Date.ToString("MMMM dd, yyyy")</h3>
+            <h3>Address: @Model.Address</h3>
+            <h3>Guests:</h3>
+            <ul class="list-group list-group-flush">
+                @{
+                    foreach(var guest in Model.Guests)
+                    {
+                        <li class="list-group-item">@guest.User.FirstName @guest.User.LastName</li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-6">
+        <div id="map"></div>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOi797bydw-SCXNzH4-TLMQr2JkL80-xY&callback=initMap"
+            async defer>
+            </script>
+            <script>
+            var map;
+            var geocoder;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 47.6062, lng: -122.3321},
+                zoom: 15
+                });
+            }
+            
+            </script>
+    </div>
+</div>
